@@ -5,7 +5,6 @@ public:
 	map<int, vector<char>> adj;
 	void addEdge(int u, int v){
 		adj[u].push_back(v);
-		adj[v].push_back(u);
 	}
 	void constructGraph(vector<pair<int, int> > edgeList){
 		for(int i = 0; i < edgeList.size(); i++){
@@ -49,6 +48,23 @@ public:
 			}
 		}
 	}
+	bool detectCycleUtil(int node=1){
+		map<int, bool> visited;
+		return detectCycle(node, visited);
+	}
+	bool detectCycle(bool node, map<int, bool> &visited){
+		visited[node] = true;
+		for(int next: adj[node]){
+			if(!visited[next]){
+				if(detectCycle(next, visited)){
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 };
 int main(){
 	// going to build a graph
@@ -72,5 +88,6 @@ int main(){
 		cout<<node<<" ";
 	}
 	cout<<"\n";
+	// cout<<"cycleDetected: "<<graph.detectCycleUtil()<<"\n";
 	return 0;
 }
