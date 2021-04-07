@@ -294,19 +294,43 @@ int32_t main()
 {
     FIO;
     T{
-        int n;
-        cin>>n;
-        string str;
-        cin>>str;
-        int i = 0;
-        string ans = "";
-        for(char c:str){
-            if(i%2 == 0){
-                ans.push_back((c == '1' ? '0' : '1'));
+        long long n, m;
+        cin>>n>>m;
+        vector<int> a1, a2, a(n), b(n);
+        for(int i = 0; i < n; i++){
+            cin>>a[i];
+        }
+        for(int i = 0; i < n; i++){
+            cin>>b[i];
+            if(b[i] == 1){
+                a1.pb(a[i]);
             } else {
-                ans.push_back((c == '1' ? '1' : '0'));
+                a2.pb(a[i]);
             }
-            i++;
+        }
+        sort(all(a1));
+        reverse(all(a1));
+        sort(all(a2));
+        reverse(all(a2));
+        int n1 = a1.size();
+        int n2 = a2.size();
+        for(int i = 1; i < n1; i++){
+            a1[i] += a1[i-1];
+        }
+        for(int i = 1; i < n2; i++){
+            a2[i] += a2[i-1]; 
+        }
+        int i1 = n1-1;
+        int i2 = -1;
+        int ans = n;
+        while(i1 >= 0){
+            int newM = m - a1[i1];
+            while(i2 < n2 && newM > a2[i2]){
+                i2++;
+            }
+            if(i2 == n2) break;
+            else ans = min(i1+1 + i2+1, ans);
+            i1--;
         }
         cout<<ans<<"\n";
     }
